@@ -4,6 +4,7 @@
 
 - [Comment Classifier](#comment-classifier)
   - [Contents](#contents)
+  - [To Do](#to-do)
   - [1. Introduction](#1-introduction)
   - [2. Data Mining Task](#2-data-mining-task)
   - [3. Technical Approach](#3-technical-approach)
@@ -11,6 +12,14 @@
   - [5. Results and Discussion](#5-results-and-discussion)
   - [6. Lessons Learned](#6-lessons-learned)
   - [7. Acknowledgements](#7-acknowledgements)
+
+## To Do
+
+- [ ] Parse Training data into the appropriate data structure
+- [ ] Figure out which classifier to use and how to configure it
+- [ ] Send Data through classifier
+- [ ] Determine accuracy
+- [ ] Write report
 
 ## 1. Introduction
 
