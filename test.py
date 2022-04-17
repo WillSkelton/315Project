@@ -1,7 +1,6 @@
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.datasets import make_multilabel_classification
 from sklearn.preprocessing import MultiLabelBinarizer
-
+from sklearn.tree import DecisionTreeClassifier
 
 # vocabulary:
 #   0 Mom
@@ -35,17 +34,49 @@ labels = [
     [1, 2],
 ]
 
-
-print(labels)
 labels = MultiLabelBinarizer().fit_transform(labels)
-print(labels)
 
-# Create Classifier
-knn = KNeighborsClassifier()
 
-# Train it
-knn.fit(data, labels)
+def processLabels(labels):
+    # print(labels)
+    labels = MultiLabelBinarizer().fit_transform(labels)
+    # print(labels)
 
-# Predict "Your Dad is Nice"
-prediction = knn.predict([[-1, 1, -1, -1, -1, -1, -1, 1, -1]])
-print(prediction)
+
+def knnClassifier(data, labels):
+    # Create Classifier
+    knn = KNeighborsClassifier()
+
+    # Train it
+    knn.fit(data, labels)
+
+    return knn
+
+
+def decisionTree(data, labels):
+    # Create Classifier
+    dt = DecisionTreeClassifier()
+
+    # Train it
+    dt.fit(data, labels)
+
+    return dt
+
+
+def main():
+
+    # Test Case: "Your dad is nice"
+    testCase = [[-1, 1, -1, -1, -1, -1, -1, 1, -1]]
+
+    knn = knnClassifier(data, labels)
+
+    # Predict "Your Dad is Nice"
+    prediction = knn.predict(testCase)
+    print(prediction[0])
+
+    dt = decisionTree(data, labels)
+    prediction = dt.predict(testCase)
+    print(prediction[0])
+
+
+main()
