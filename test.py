@@ -20,11 +20,11 @@ from sklearn.preprocessing import MultiLabelBinarizer
 
 data = [
     #0, 1, 2, 3, 4, 5, 6, 7, 8
-    [1, 0, 0, 0, 0, 0, 0, 0, 1],  # Your mom is ugly
-    [1, 0, 0, 0, 0, 0, 0, 1, 0],  # Your mom is nice
-    [0, 1, 0, 0, 0, 1, 0, 0, 0],  # Your dad is harry
-    [0, 0, 1, 1, 0, 0, 0, 0, 0],  # Your grandma is old
-    [0, 0, 1, 1, 0, 0, 0, 1, 0],  # Your grandma is old and nice
+    [1, -1, -1, -1, -1, -1, -1, -1, 1],  # Your mom is ugly
+    [1, -1, -1, -1, -1, -1, -1, 1, -1],  # Your mom is nice
+    [-1, 1, -1, -1, -1, 1, -1, -1, -1],  # Your dad is harry
+    [-1, -1, 1, 1, -1, -1, -1, -1, -1],  # Your grandma is old
+    [-1, -1, 1, 1, -1, -1, -1, 1, -1],  # Your grandma is old and nice
 ]
 
 labels = [
@@ -39,3 +39,13 @@ labels = [
 print(labels)
 labels = MultiLabelBinarizer().fit_transform(labels)
 print(labels)
+
+# Create Classifier
+knn = KNeighborsClassifier()
+
+# Train it
+knn.fit(data, labels)
+
+# Predict "Your Dad is Nice"
+prediction = knn.predict([[-1, 1, -1, -1, -1, -1, -1, 1, -1]])
+print(prediction)
