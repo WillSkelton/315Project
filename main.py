@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime
 from doctest import testfile
+from numpy import number
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.datasets import make_multilabel_classification
 from sklearn.preprocessing import MultiLabelBinarizer
@@ -106,17 +107,17 @@ def CreateAndTrainDecisionTree(data, labels):
 
 if __name__ == "__main__":
 
-    numberOfTrainingComments = 500
+    numberOfTrainingComments = 4000
 
     stopList = parseStopList()
     comments, trainLabels = parseData("data/train.csv")
     vocabulary = generateVocabulary(comments, stopList)
-    trainData = generateDataFromComments(comments, vocabulary)
+    trainData = generateDataFromComments(comments[:numberOfTrainingComments], vocabulary)
 
     log(f"Number of Comments `{len(comments)}`")
     log(f"Number of Data Points `{len(trainData)}`")
 
-    dt = CreateAndTrainDecisionTree(trainData, trainLabels)
+    dt = CreateAndTrainDecisionTree(trainData, trainLabels[:numberOfTrainingComments])
 
     testComments = [
         "Yo bitch Ja Rule is more succesful then you'll ever be whats up with you and hating you sad mofuckas...i should bitch slap ur pethedic white faces and get you to kiss my ass you guys sicken me. Ja rule is about pride in da music man. dont diss that shit on him. and nothin is wrong bein like tupac he was a brother too...fuckin white boys get things right next time.,",
