@@ -24,7 +24,7 @@ def parseStopList():
     return stopList
 
 
-def parseData(filename):
+def parseTrainData(filename, maxLength):
     log(f"Opening file: `{filename}`")
     file = open(filename, encoding='utf-8')
     csvreader = csv.reader(file)
@@ -36,7 +36,10 @@ def parseData(filename):
 
     log("Traversing file...")
     # extracting each data row one by one
-    for row in csvreader:
+    for index, row in enumerate(csvreader):
+        if index == maxLength:
+            break
+
         if(len(row) < 8):
             continue
 
@@ -105,16 +108,67 @@ def CreateAndTrainDecisionTree(data, labels):
     return dt
 
 
-if __name__ == "__main__":
+def parseTestData(filename, maxLength):
+    file = open(filename, encoding='utf-8')
 
-    numberOfTrainingComments = 4000
+    csvreader = csv.reader(file)
+
+    fields = next(csvreader)
+
+    comments = []
+
+    # extracting each data row one by one
+    for index, row in enumerate(csvreader):
+        if index == maxLength:
+            break
+        if(len(row) < 2):
+            continue
+
+        comments.append(row[1])
+
+    return comments
+
+
+def parseTestLabels(filename, maxLength):
+    file = open(filename, encoding='utf-8')
+
+    csvreader = csv.reader(file)
+
+    fields = next(csvreader)
+
+    labels = []
+
+    # extracting each data row one by one
+    for index, row in enumerate(csvreader):
+        if index == maxLength:
+            break
+        labels.append(list(map(lambda num: 1 if num == '1' else -1, row[1:])))
+
+    return labels
+
+
+if __name__ == "__main__":
+    trainLength = 4000
+    testlength = 2000
 
     stopList = parseStopList()
-    comments, trainLabels = parseData("data/train.csv")
+    comments, trainLabels = parseTrainData("data/train.csv", trainLength)
     vocabulary = generateVocabulary(comments, stopList)
-    trainData = generateDataFromComments(comments[:numberOfTrainingComments], vocabulary)
+    trainData = generateDataFromComments(comments, vocabulary)
 
     log(f"Number of Comments `{len(comments)}`")
     log(f"Number of Data Points `{len(trainData)}`")
 
-    dt = CreateAndTrainDecisionTree(trainData, trainLabels[:numberOfTrainingComments])
+    dt = CreateAndTrainDecisionTree(trainData, trainLabels)
+
+    log("Gathering Test Data...")
+    testData = generateDataFromComments(
+        parseTestData("data/test.csv", testlength),
+        vocabulary
+    )
+
+    log("Gathering Test Labels...")
+    testLabels = parseTestLabels("data/test_labels.csv", testlength)
+
+    log("Calculating Decision Tree Accuracy...")
+    log(f"Accuracy: {dt.score(testData, testLabels)}")
