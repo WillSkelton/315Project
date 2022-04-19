@@ -139,7 +139,7 @@ The trickiest part of this data was the file size and the fact that it was a `cs
 
 ### 4.2 Metrics
 
-- List the metrics you employed to evaluate the output of data mining task and/or questions investigated. Justify their choice from real-world applications perspective.
+The metric we used was accuracy. The main reason being that we're not doing anything so complicated that we needed something more advanced. Our goal was to see how well an algorithm could classify a comment as toxic and accuracy showed us that it could do it about 85% of the time.
 
 ## 5. Results and Discussion
 
