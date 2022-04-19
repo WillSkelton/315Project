@@ -118,25 +118,3 @@ if __name__ == "__main__":
     log(f"Number of Data Points `{len(trainData)}`")
 
     dt = CreateAndTrainDecisionTree(trainData, trainLabels[:numberOfTrainingComments])
-
-    testComments = [
-        "Yo bitch Ja Rule is more succesful then you'll ever be whats up with you and hating you sad mofuckas...i should bitch slap ur pethedic white faces and get you to kiss my ass you guys sicken me. Ja rule is about pride in da music man. dont diss that shit on him. and nothin is wrong bein like tupac he was a brother too...fuckin white boys get things right next time.,",
-
-        "fuck islam , fuck Saud -Arabia",
-    ]
-
-    testComments = generateDataFromComments(testComments, vocabulary)
-
-    trainLabels = [
-        [-1, -1, -1, -1, -1, -1],
-        [1, 1, 1, -1, 1, 1]
-    ]
-
-    log("Predicting...")
-    predictions = dt.predict(testComments)
-
-    log("Predicted Values:")
-    for actual, prediction in zip(trainLabels, predictions):
-        log(f"{actual}")
-        log(f"{prediction}")
-        log("----------------------------")
