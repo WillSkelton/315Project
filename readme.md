@@ -23,7 +23,9 @@
     - [5.1 Results](#51-results)
     - [5.2 What Worked](#52-what-worked)
     - [5.3 What Didn't](#53-what-didnt)
-  - [6. Lessons Learned](#6-lessons-learned)
+  - [6. Retrospective](#6-retrospective)
+    - [6.1 Lessons Learned](#61-lessons-learned)
+    - [6.2 Hindsight](#62-hindsight)
   - [7. Acknowledgements](#7-acknowledgements)
 
 ## 1. Introduction
@@ -119,7 +121,7 @@ After we installed the package, we came up with a very small test data set of ou
 
 Once we had a little sample data set to work with, we started plugging it into different Scikit Learn classifiers that supported multilabel classification. We tried the K-Nearest Neighbor and the Decision Tree and found that the Decision Tree had the highest level of accuracy.
 
-The last step was to parse the Wikipedia data and run that through our Decision Tree. We quickly found out that we didn't have enough space to train on EVERY training comment. There are tens of thousands of comments in the training set and and my computer ran out of ram trying to store them all in an array. So we tried a few different sizes for subsets and found that 4000 training comments was the sweet-spot.
+The last step was to parse the Wikipedia data and run that through our Decision Tree. We quickly found out that we didn't have enough space to train on EVERY training comment. There are tens of thousands of comments in the training set and and my computer ran out of RAM trying to store them all in an array. So we tried a few different sizes for subsets and found that 4000 training comments was the sweet-spot.
 
 Once the training data was parsed, all we had to do was train the classifier with it, parse the testing data the same way we parsed the training data, and then test how well our classifier could predict the testing data.
 
@@ -145,20 +147,28 @@ The metric we used was accuracy. The main reason being that we're not doing anyt
 
 ### 5.1 Results
 
-- Present and explain results in a step-by-step manner to tell us a story about what you have discovered by doing this project (all graphs and tables should be properly labeled with legends and captions. they should be self-sufficient to understand the results)
+Our results showed that we can train a decision tree to determine whether or not a Wikipedia comment is toxic. Like we mentioned earlier, our decision tree was able to predict with about 85% accuracy which is pretty good considering that we did not use the entire training data set and we are new to machine learning. I bet that with further optimization and more experience with classifiers such as deep networks, we could achieve an even higher accuracy.
 
 ### 5.2 What Worked
 
-- What worked and why?
+The decision tree was the right way to go in terms of classifiers. The main drawback of decision trees is that they can get arbitrarily large which can lead to overfitting. In our case, overfitting didn't seem to be a huge issue and, while the tree does get fairly large, it's not so large that current computer hardware has an issue generating it.
+
+Another thing we did that was fairly successful was using a smaller subset of the training data. We found that the sweet-spot was about 4000 training comments. Since our algorithm will create a vocabulary of each unique word from the training data and use the existence of each word in each comment as a feature, the more comments we use for training, the larger a tree is and the longer it takes to train. 4000 training points provided a nice balance between training time/tree size and accuracy. IT only took a minute or two on my laptop to train.
 
 ### 5.3 What Didn't
 
-- What didn't work and why not?
+The main thing that didn't work was trying to use all the training data. The problem was that the way we are loading it into the classifier is simply storing it in a two-dimensional array and we quickly ran out of RAM trying to allocate space for an array that big.
 
-## 6. Lessons Learned
+## 6. Retrospective
 
-- What did you learn by doing this project? In the hindsight, would you have made some different decisions to improve the project further?
+### 6.1 Lessons Learned
+
+The biggest takeaway from this project was learning how multilabel classification works and learning how to select the right classifier for a given task. In addition, wo gor a good deal of practice working with large datasets.
+
+### 6.2 Hindsight
+
+The main thing we'd do better next time would to find a better way to store the training data so we can use the entire training set.
 
 ## 7. Acknowledgements
 
-- Acknowledge all the sources of help you got to do this project
+- [Scikit Learn Documentation](https://scikit-learn.org/stable/modules/multiclass.html)
