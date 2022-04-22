@@ -61,15 +61,78 @@ The goal of this project is to take real comments from Wikipedia that have been 
 
 ### 2.1 Task Description
 
-- Clearly describe all the details of the task. What is the input data? What is the output of data mining approach? Give examples to illustrate them.
+Our input data consists of sentences users have written on wikipedia, with labels for each sentence placing the sentence into 5 different categories. These categories identify the users sentence on varying levels of toxicity, such as 'hate speech' or 'insult'. Each row is organized as the first entry being a unique ID. The second entry in each row is the actual sentence, and the third being the set of 5 labels. We know a sentence is placed in a specific category by the binary identifiers (i.e. either 0 or 1).
+
+Example:
+* "0002bcb3da6cb337","COCKSUCKER BEFORE YOU PISS AROUND ON MY WORK",1,1,1,0,1,0
+
+Our output yieled a decision tree able to predict toxic comments with 85% accuracy. To read more go to section 5.
+
+```
+[20:55:51]: Number of Comments `4000`
+[20:55:51]: Number of Data Points `4000`
+[20:55:51]: Creating Decision Tree
+[20:55:51]: Done
+[20:55:51]: Training Decision Tree
+[20:58:30]: Done
+[20:58:30]: Gathering Test Data...
+[20:58:30]: Generating Data from Comments...
+[20:58:30]:   - Parsing comment 1/2000
+[20:58:31]:   - Parsing comment 201/2000
+[20:58:32]:   - Parsing comment 401/2000
+[20:58:33]:   - Parsing comment 601/2000
+[20:58:34]:   - Parsing comment 801/2000
+[20:58:35]:   - Parsing comment 1001/2000
+[20:58:36]:   - Parsing comment 1201/2000
+[20:58:37]:   - Parsing comment 1401/2000
+[20:58:38]:   - Parsing comment 1601/2000
+[20:58:39]:   - Parsing comment 1801/2000
+[20:58:40]: Done
+[20:58:40]: Gathering Test Labels...
+[20:58:40]: Calculating Decision Tree Accuracy...
+[20:58:44]: Accuracy: 0.864
+```
 
 ### 2.2 Questions To Answer
 
-- List all the data mining questions that you set out to investigate in this project.
+As stated in section 1.2, these are the questions we sought out to answer within this project.
+
+1. Can we use Machine Learning to determine the toxicity of a comment?
+2. How do we get training and testing data?
+3. Which ML Classifiers are best suited for this task?
 
 ### 2.3 Challenges
 
 - List the key challenges to solve this task
+
+One of the first challenges we faced were understanding how to work with multiple labels. In our CSV file the final five entries for each row were the binary classifiers.
+
+We needed to construct a parsing function to handle this.
+
+```py
+def parseTestLabels(filename, maxLength):
+    file = open(filename, encoding='utf-8')
+
+    csvreader = csv.reader(file)
+
+    fields = next(csvreader)
+
+    labels = []
+
+    # extracting each data row one by one
+    for index, row in enumerate(csvreader):
+        if index == maxLength:
+            break
+        labels.append(list(map(lambda num: 1 if num == '1' else -1, row[1:])))
+
+    return labels
+```
+
+Example:
+* "id","comment_text","toxic","severe_toxic","obscene","threat","insult","identity_hate"
+
+Another challenge was identifying how much training data needed to be used to yield the highest accuracy. We found that training the model on 4000 data entries yielded 85% accuracy.
+
 
 ## 3. Technical Approach
 
